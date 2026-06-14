@@ -29,7 +29,10 @@ FROM `your_project.liquor_sales.sales_history`
 GROUP BY sales_year
 ORDER BY sales_year DESC;
 ```
--- Top 5 categories by total revenue
+## Step 3: Identifying Top Performing Product Categories
+Next, I isolated which categories (e.g., Bourbon, Vodka, Tequila) drove the most revenue over the 10-year span.
+
+```sql
 SELECT 
   category_name,
   ROUND(SUM(sale_dollars), 2) AS total_revenue
@@ -37,3 +40,4 @@ FROM `your_project.liquor_sales.sales_history`
 GROUP BY category_name
 ORDER BY total_revenue DESC
 LIMIT 5;
+```
