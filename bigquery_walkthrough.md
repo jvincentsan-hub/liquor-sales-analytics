@@ -14,6 +14,12 @@ SELECT
   COUNTIF(invoice_id IS NULL) AS missing_invoices,
   COUNTIF(sale_dollars IS NULL) AS missing_sales
 FROM `your_project.liquor_sales.sales_history`;
+```
+## Step 2: Aggregating 10-Year Sales Trends
+
+To find the overall trajectory of liquor sales over the last decade, I aggregated total revenue and volume sold by year.
+
+```sql
 -- Extracting year and summing total sales
 SELECT 
   EXTRACT(YEAR FROM date) AS sales_year,
@@ -22,6 +28,7 @@ SELECT
 FROM `your_project.liquor_sales.sales_history`
 GROUP BY sales_year
 ORDER BY sales_year DESC;
+```
 -- Top 5 categories by total revenue
 SELECT 
   category_name,
