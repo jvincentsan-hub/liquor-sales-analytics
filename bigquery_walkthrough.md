@@ -1,43 +1,41 @@
-# 🔍 BigQuery Data Analysis Walkthrough
+# Iowa Liquor Sales: 10-Year Monthly Trend Analysis
 
-This document outlines the step-by-step SQL analysis performed on 10 years of liquor sales data inside Google BigQuery.
+## 📌 Project Overview
+This project analyzes a massive, real-world public dataset containing millions of liquor sales transactions in Iowa spanning from 2016 to 2025. The goal of this analysis is to uncover macro-level seasonal purchasing patterns, evaluate year-over-year growth, and identify cyclical demand fluctuations to help retailers optimize inventory management and predict supply chain demand.
 
 ---
 
-## Step 1: Data Cleaning & Handling Missing Values
+## 📊 Business Objectives & Questions
+* **Seasonality:** Which months historically experience the highest surge in liquor sales volume?
+* **Growth Trends:** How have total sales evolved over the last decade? Is the market expanding, or has it plateaued?
+* **Predictive Value:** Can historical buying behavior accurately forecast which quarters require aggressive stocking and staffing?
 
-Before analyzing trends, I checked for null values in the sales data and ensured the date columns were properly formatted.
+---
 
-```sql
--- Checking for null values in critical columns
-SELECT 
-  COUNTIF(invoice_id IS NULL) AS missing_invoices,
-  COUNTIF(sale_dollars IS NULL) AS missing_sales
-FROM `your_project.liquor_sales.sales_history`;
-```
-## Step 2: Aggregating 10-Year Sales Trends
+## 🗄️ Dataset Used
+* **Source:** Google BigQuery Public Data
+* **Table:** `bigquery-public-data.iowa_liquor_sales.sales`
+* **Scope:** Time-series filtering from **January 1, 2016, to December 31, 2025**.
 
-To find the overall trajectory of liquor sales over the last decade, I aggregated total revenue and volume sold by year.
+---
 
-```sql
--- Extracting year and summing total sales
-SELECT 
-  EXTRACT(YEAR FROM date) AS sales_year,
-  ROUND(SUM(sale_dollars), 2) AS total_revenue,
-  SUM(volume_sold_liters) AS total_liters_sold
-FROM `your_project.liquor_sales.sales_history`
-GROUP BY sales_year
-ORDER BY sales_year DESC;
-```
-## Step 3: Identifying Top Performing Product Categories
-Next, I isolated which categories (e.g., Bourbon, Vodka, Tequila) drove the most revenue over the 10-year span.
+## 💻 SQL Implementation
+
+The analysis aggregates total dollar sales by year and month while ensuring the final output is sequentially ordered chronologically.
 
 ```sql
 SELECT 
-  category_name,
-  ROUND(SUM(sale_dollars), 2) AS total_revenue
-FROM `your_project.liquor_sales.sales_history`
-GROUP BY category_name
-ORDER BY total_revenue DESC
-LIMIT 5;
-```
+    EXTRACT(YEAR FROM date) as sales_year, 
+    FORMAT_DATE('%b', date) as calendar_month, 
+    SUM(sale_dollars) as total_sales
+FROM 
+    `bigquery-public-data.iowa_liquor_sales.sales`
+WHERE 
+    date BETWEEN '2016-01-01' AND '2025-12-31'
+GROUP BY 
+    sales_year, 
+    calendar_month, 
+    EXTRACT(MONTH FROM date)
+ORDER BY 
+    sales_year ASC, 
+    EXTRACT(MONTH FROM date) ASC;
