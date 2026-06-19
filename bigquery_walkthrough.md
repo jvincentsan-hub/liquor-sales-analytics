@@ -74,7 +74,7 @@ ORDER BY
 
 Below is the visualized trend chart mapping out the historical baseline metrics over the 10-year span.
 
-![Liquor Sales](Liquor_Sales_AVG.png)
+[![Liquor Sales](Liquor_Sales_AVG.png)](https://public.tableau.com/views/LiquorSales10-YearMonthlyAverage/10-Year-Monthly-AVG)
 
 ### Key Takeaways for Retail Stakeholders:
 * **The Normalization Factor:** Utilizing absolute totals displays a deceptive ~$262M for January, which is non-actionable for a single fiscal year. The normalized average monthly sales isolates the true operational baseline closer to **$26.2M**.
